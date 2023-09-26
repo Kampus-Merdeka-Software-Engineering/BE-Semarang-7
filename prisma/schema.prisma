@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Float
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+  rating    Rating[]
+
+  @@map(name: "products")
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  productId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map(name: "ratings")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  rating    Int
+  review    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  @@map(name: "reviews")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+
+  @@map(name: "messages")
+}
