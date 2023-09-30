@@ -6,7 +6,7 @@ import { router as reviewRouter } from '@/routers/review'
 import { router as messageRouter } from '@/routers/message'
 
 const app = express()
-const port = 8080
+const port = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
