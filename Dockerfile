@@ -1,4 +1,8 @@
+ARG EnvironmentVariable
+
 FROM node:alpine
+
+ARG RAILWAY_ENVIRONMENT
 
 WORKDIR /app
 
