@@ -5,14 +5,14 @@
       "ESNext"
     ],
     "module": "NodeNext",
-    "target": "ESNext",
-    "outDir": "./public/build",
+    "target": "ES2020",
+    "outDir": "dist/build",
+    "rootDir": "src",
     "moduleResolution": "NodeNext",
     "moduleDetection": "force",
-    "sourceMap": true,
+    "sourceMap": false,
     "esModuleInterop": true,
     "allowJs": true,
-    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
