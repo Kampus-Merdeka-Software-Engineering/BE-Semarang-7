@@ -2,7 +2,7 @@
   "name": "indonary-backend",
   "scripts": {
     "compile": "tsc && tsc-alias",
-    "build": "prisma generate && esbuild ./src/index.ts --bundle --minify --platform=node --target=es2020 --outfile=dist/build/bundle/bundle.js",
+    "build": "esbuild ./src/index.ts --bundle --minify --platform=node --target=es2020 --outfile=dist/build/bundle/bundle.js",
     "dev": "nodemon ./src/index.ts",
     "start": "node ./dist/build/bundle/bundle.js",
     "test": "jest"
