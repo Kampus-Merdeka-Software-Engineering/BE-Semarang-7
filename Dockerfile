@@ -9,7 +9,7 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # COPY ENV variable
-COPY .env ./
+COPY .env.example ./env
 
 # COPY tsconfig.json file
 COPY tsconfig.json ./
