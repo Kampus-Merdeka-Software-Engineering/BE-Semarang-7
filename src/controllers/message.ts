@@ -9,8 +9,12 @@ export * as messageController from "@/controllers/message"
  * response.
  */
 export const getMessages = async (req: Request, res: Response, next: NextFunction) => {
-    const messages = await prisma.message.findMany()
-    res.json(messages)
+    try {
+        const messages = await prisma.message.findMany()
+        res.json(messages)
+    } catch (error) {
+        next(error)
+    }
 }
 
 /**
@@ -19,18 +23,22 @@ export const getMessages = async (req: Request, res: Response, next: NextFunctio
  * a 404 status code and a JSON response with the message "Message not found" is returned.
  */
 export const getMessageById = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params
-    const message = await prisma.message.findUnique({
-        where: {
-            id: parseInt(id),
+    try {
+        const { id } = req.params
+        const message = await prisma.message.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        })
+    
+        if (!message) {
+            return res.status(404).json({ message: 'Message not found' })
         }
-    })
-
-    if (!message) {
-        return res.status(404).json({ message: 'Message not found' })
+    
+        res.json(message)
+    } catch (error) {
+        next(error)
     }
-
-    res.json(message)
 }
 
 /**
@@ -53,7 +61,6 @@ export const createMessage = async (req: Request, res: Response, next: NextFunct
         res.json({ success: true, data: userMessage })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }
 
@@ -80,6 +87,5 @@ export const deleteMessage = async (req: Request, res: Response, next: NextFunct
         res.json({ success: true })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }

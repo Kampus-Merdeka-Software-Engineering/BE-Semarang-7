@@ -9,8 +9,23 @@ export * as reviewController from "@/controllers/review"
  * @returns a JSON response.
  */
 export const getReviews = async (req: Request, res: Response, next: NextFunction) => {
-    const reviews = await prisma.review.findMany()
-    res.json(reviews)
+    try {
+        const {take} = req.query
+        const reviews = await prisma.review.findMany({
+            take: take ? parseInt(take as string) : undefined,
+            orderBy: [
+                {
+                    createdAt: "desc"
+                },
+                {
+                    rating: "desc"
+                }
+            ]
+        })
+        res.json(reviews)
+    } catch (error) {
+        next(error)
+    }
 }
 
 /**
@@ -18,20 +33,23 @@ export const getReviews = async (req: Request, res: Response, next: NextFunction
  * @returns a JSON response containing the review object if it exists. If the review is not found, a 404 status code and a JSON response with a message "Review not found" is returned.
  */
 export const getReviewById = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params
-    const review = await prisma.review.findUnique({
-        where: {
-            id: parseInt(id),
+    try {
+        const { id } = req.params
+        const review = await prisma.review.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        })
+    
+        if (!review) {
+            return res.status(404).json({ message: 'Review not found' })
         }
-    })
-
-    if (!review) {
-        return res.status(404).json({ message: 'Review not found' })
+    
+        res.json(review)
+    } catch (error) {
+        next(error)
     }
-
-    res.json(review)
 }
-
 
 /**
  * The `addReview` function is an asynchronous function that handles the creation of a new review by
@@ -55,6 +73,5 @@ export const createReview = async (req: Request, res: Response, next: NextFuncti
         res.json(userReview)
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }
