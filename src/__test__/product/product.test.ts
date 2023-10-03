@@ -1,33 +1,59 @@
-import {productController} from "@/controllers/product"
+import supertest from "supertest"
+import server from "@/lib/supertestServer"
+import path from "path"
 
-describe("getProducts", () => {
-    it("should return an array of products", async () => {
-        const req = {
-            query: {
-                search: ""
-            }
-        } as any
-        const res = {
-            json: jest.fn()
-        } as any
-        const next = jest.fn()
-        await productController.getProducts(req, res, next)
-        expect(res.json).toHaveBeenCalledWith(expect.any(Array))
+const app = server()
+
+describe("[GET] get all products", () => {
+    describe("given there are products", () => {
+        it("should return 200", async () => {
+            await supertest(app).get("/product").expect(200)
+        })
     })
 })
 
-describe("getProductById", () => {
-    it("should return a product", async () => {
-        const req = {
-            params: {
-                id: "1"
+describe("[GET] get product by ID", () => {
+    describe("given product exists", () => {
+        it("should return 200", async () => {
+            const productId = 35
+            await supertest(app).get(`/product/${productId}`).expect(200)
+        })
+    })
+
+    describe("given product doesn't exist", () => {
+        it("should return 404", async () => {
+            const productId = 0
+            await supertest(app).get(`/product/${productId}`).expect(404)
+        })
+    })
+})
+
+describe("[POST] create product", () => {
+    describe("given product data is valid", () => {
+        it("should return 201", async () => {
+            const product = {
+                name: "Test Product",
+                price: 100,
             }
-        } as any
-        const res = {
-            json: jest.fn()
-        } as any
-        const next = jest.fn()
-        await productController.getProductById(req, res, next)
-        expect(res.json).toHaveBeenCalledWith(expect.any(Object))
+            await supertest(app)
+            .post("/product")
+            .field('name', product.name)
+            .field('price', product.price)
+            .attach('image', path.resolve(__dirname, '../asset/test.png'))
+            .expect(201)
+        })
+    })
+
+    describe("given product data is invalid", () => {
+        it("should return 400", async () => {
+            const product = {
+                name: "Test Product",
+                price: 100
+            }
+            await supertest(app)
+            .post("/product")
+            .send(product)
+            .expect(400)
+        })
     })
 })

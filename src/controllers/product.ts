@@ -26,6 +26,11 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
                 image: true
             },
         })
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No products found" })
+        }
+
         const ratings = await prisma.rating.groupBy({
             by: ["productId"],
             _avg: {
@@ -35,6 +40,7 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
                 rating: true
             }
         })
+
         res.json(products.map((product) => {
             const rating = ratings.find((rating) => rating.productId === product.id)
             return {
@@ -45,7 +51,6 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
         }))
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }
 
@@ -54,6 +59,7 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
  * using Prisma ORM in a TypeScript application. It returns the product as a JSON response.
  */
 export const getProductById = async (req: Request, res: Response, next: NextFunction) => {
+    errorResponse(req, res)
     try {
         const { id } = req.params
         const product = await prisma.product.findUnique({
@@ -78,7 +84,6 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
         res.json({ ...product, rating: rating._avg.rating, rating_count: rating._count.rating })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }
 
@@ -103,13 +108,12 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
             data: {
                 name,
                 price: parseInt(price),
-                image: req.file.path
+                image: req.file.filename
             }
         })
-        res.json({ success: true, data: product })
+        res.status(201).json({ success: true, data: product })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong", error: error })
     }
 }
 
@@ -169,7 +173,6 @@ export const updateProduct = async (req: Request, res: Response, next: NextFunct
         res.status(200).json({ success: true, data: updatedProduct })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong", error: error })
     }
 }
 
@@ -199,7 +202,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
             return res.status(404).json({ message: "Product not found" })
         }
 
-        fs.exists(product.image, (exists) => {
+        fs.access(product.image, (exists) => {
             if (exists) {
                 fs.unlink(product.image, (err) => {
                     if (err) {
@@ -218,6 +221,5 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
         res.json({ success: true, data: deletedProduct })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong", error: error })
     }
 }

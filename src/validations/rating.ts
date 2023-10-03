@@ -7,6 +7,6 @@ export * as ratingValidator from "@/validations/rating"
  * creating a rating.
 */
 export const createValidation = [
-    body("productId").isNumeric(),
+    body("productId").isNumeric().escape(),
     body("rating").isNumeric(),
 ]
