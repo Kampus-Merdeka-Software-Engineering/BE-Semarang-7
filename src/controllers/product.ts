@@ -100,10 +100,10 @@ export const createProduct = async (req: Request, res: Response, next: NextFunct
     errorResponse(req, res)
 
     try {
-        const { name, price } = req.body;
+        const { name, price } = req.body
 
         if (!req.file) {
-            return res.status(400).json({ message: "Please upload an image file." });
+            return res.status(400).json({ message: "Please upload an image file." })
         }
 
         const product = await prisma.product.create({
