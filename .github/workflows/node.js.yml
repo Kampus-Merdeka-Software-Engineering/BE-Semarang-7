@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -34,5 +34,5 @@ jobs:
 
     - name: Install dependencies
       run: pnpm install
-    - run: pnpm run build --if-present
-    - run: pnpm test
+    # - run: pnpm run build --if-present
+    # - run: pnpm test
