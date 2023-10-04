@@ -34,7 +34,7 @@ jobs:
 
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
-    - run: pnpm run build --if-present
+    - run: pnpm run build
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
     - run: pnpm test
