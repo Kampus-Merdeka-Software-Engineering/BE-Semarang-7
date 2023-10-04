@@ -13,9 +13,9 @@
     "@types/http-errors": "^2.0.2",
     "@types/jest": "^29.5.5",
     "@types/multer": "^1.4.8",
-    "@types/node": "^20.7.0",
+    "@types/node": "^20.8.2",
     "@types/supertest": "^2.0.14",
-    "esbuild": "^0.19.3",
+    "esbuild": "^0.19.4",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "prisma": "latest",
@@ -25,9 +25,6 @@
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
   },
   "dependencies": {
     "@prisma/client": "latest",
