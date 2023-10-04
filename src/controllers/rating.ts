@@ -9,9 +9,9 @@ export * as ratingController from "@/controllers/rating"
  * product and returns the created rating.
  */
 export const createRating = async (req: Request, res: Response, next: NextFunction) => {
-    const errors = errorResponse(req, res)
-    const { productId, rating } = req.body
+    errorResponse(req, res)
     try {
+        const { productId, rating } = req.body
         const userRating = await prisma.rating.create({
             data: {
                 rating: parseInt(rating),
@@ -25,6 +25,5 @@ export const createRating = async (req: Request, res: Response, next: NextFuncti
         res.json({ success: true, data: userRating })
     } catch (error) {
         next(error)
-        res.status(500).json({ message: "Something went wrong" })
     }
 }
