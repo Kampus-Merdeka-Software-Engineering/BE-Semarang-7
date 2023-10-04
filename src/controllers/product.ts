@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express"
 import fs from "fs"
 import { errorResponse } from "@/lib/validatorResponse"
 import { prisma } from "@/lib/dbConnector"
+import { fileUploader } from "@/lib/fileUploader"
+import path from "path"
 
 /**
  * Export all functions from the product controller under a named export.
@@ -204,7 +206,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
 
         fs.access(product.image, (exists) => {
             if (exists) {
-                fs.unlink(product.image, (err) => {
+                fs.unlink(path.join(fileUploader.filePath, product.image), (err) => {
                     if (err) {
                         next(err)
                     }
@@ -218,7 +220,7 @@ export const deleteProduct = async (req: Request, res: Response, next: NextFunct
             }
         })
 
-        res.json({ success: true, data: deletedProduct })
+        res.json({ success: true, data: deletedProduct, message: `${fileUploader.filePath}/${product.image}` })
     } catch (error) {
         next(error)
     }

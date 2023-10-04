@@ -58,7 +58,7 @@ export const createMessage = async (req: Request, res: Response, next: NextFunct
                 message
             }
         })
-        res.json({ success: true, data: userMessage })
+        res.status(201).json({ success: true, data: userMessage })
     } catch (error) {
         next(error)
     }
