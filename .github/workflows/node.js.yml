@@ -38,3 +38,5 @@ jobs:
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
     - run: pnpm test
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
