@@ -35,12 +35,6 @@ describe("[POST] create product", () => {
     })
 })
 
-const latestId = prisma.product.findFirst({
-    orderBy: {
-        id: "desc"
-    }
-}).then((product) => product?.id)
-
 describe("[GET] get all products", () => {
     describe("given there are products", () => {
         it("should return 200", async () => {
@@ -54,7 +48,11 @@ describe("[GET] get all products", () => {
 describe("[GET] get product by ID", () => {
     describe("given product exists", () => {
         it("should return 200", async () => {
-            const productId = await latestId
+            const productId = await prisma.product.findFirst({
+                orderBy: {
+                    id: "desc"
+                }
+            }).then((product) => product?.id)
             await supertest(app)
                 .get(`/product/${productId}`)
                 .expect(200)
@@ -74,7 +72,11 @@ describe("[GET] get product by ID", () => {
 describe("[PUT] update product", () => {
     describe("given product exists", () => {
         it("should return 200", async () => {
-            const productId = await latestId
+            const productId = await prisma.product.findFirst({
+                orderBy: {
+                    id: "desc"
+                }
+            }).then((product) => product?.id)
             const product = {
                 name: "Test Product",
                 price: 100
@@ -103,7 +105,11 @@ describe("[PUT] update product", () => {
 describe("[DELETE] delete product", () => {
     describe("given product exists", () => {
         it("should return 200", async () => {
-            const productId = await latestId
+            const productId = await prisma.product.findFirst({
+                orderBy: {
+                    id: "desc"
+                }
+            }).then((product) => product?.id)
             await supertest(app)
                 .delete(`/product/${productId}`)
                 .expect(200)
