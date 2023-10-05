@@ -7,9 +7,9 @@ export * as messageValidator from "@/validations/message"
  * `createMessage` function.
  */
 export const createValidation = [
-    body("name").isString(),
-    body("email").isEmail(),
-    body("message").isString()
+    body("name").isString().escape(),
+    body("email").isEmail().escape(),
+    body("message").isString().escape()
 ]
 
 /**

@@ -1,3 +1,4 @@
 {
-  "exec": "ts-node ./index.ts"
+  "exec": "ts-node",
+  "ignore": ["*.test.ts"]
 }

@@ -2,9 +2,11 @@ import multer from "multer"
 
 export * as fileUploader from "@/lib/fileUploader"
 
+export const filePath = "public/uploads"
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "./public/uploads")
+        cb(null, filePath)
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)

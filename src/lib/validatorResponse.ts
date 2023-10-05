@@ -1,7 +1,6 @@
 import { validationResult } from "express-validator"
 import { Request, Response } from "express"
 import fs from "fs"
-import path from "path"
 
 /**
  * The function checks for validation errors in a request and returns a response with the errors if
