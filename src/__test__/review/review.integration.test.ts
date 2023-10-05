@@ -36,12 +36,6 @@ describe("[POST] create review", () => {
     })
 })
 
-const latestId = prisma.review.findFirst({
-    orderBy: {
-        id: "desc"
-    }
-}).then((review) => review?.id)
-
 describe("[GET] get all reviews", () => {
     describe("given there are reviews", () => {
         it("should return 200", async () => {
@@ -55,7 +49,11 @@ describe("[GET] get all reviews", () => {
 describe("[GET] get review by ID", () => {
     describe("given review exists", () => {
         it("should return 200", async () => {
-            const productId = await latestId
+            const productId = await prisma.review.findFirst({
+                orderBy: {
+                    id: "desc"
+                }
+            }).then((review) => review?.id)
             await supertest(app)
                 .get(`/review/${productId}`)
                 .expect(200)
