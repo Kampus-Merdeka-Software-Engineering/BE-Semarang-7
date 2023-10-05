@@ -70,7 +70,7 @@ export const createReview = async (req: Request, res: Response, next: NextFuncti
             }
         })
 
-        res.json(userReview)
+        res.status(201).json(userReview)
     } catch (error) {
         next(error)
     }

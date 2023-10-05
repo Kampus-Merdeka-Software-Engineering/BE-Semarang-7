@@ -12,6 +12,16 @@ export const createRating = async (req: Request, res: Response, next: NextFuncti
     errorResponse(req, res)
     try {
         const { productId, rating } = req.body
+        const product = await prisma.product.findUnique({
+            where: {
+                id: parseInt(productId)
+            }
+        })
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+
         const userRating = await prisma.rating.create({
             data: {
                 rating: parseInt(rating),
@@ -22,7 +32,7 @@ export const createRating = async (req: Request, res: Response, next: NextFuncti
                 }
             }
         })
-        res.json({ success: true, data: userRating })
+        res.status(201).json({ success: true, data: userRating })
     } catch (error) {
         next(error)
     }
