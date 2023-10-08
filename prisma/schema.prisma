@@ -36,7 +36,7 @@ model Rating {
 model Review {
   id        Int      @id @default(autoincrement())
   name      String
-  email     String
+  email     String?  
   rating    Int
   review    String   @db.Text
   createdAt DateTime @default(now())
