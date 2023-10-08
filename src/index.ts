@@ -10,9 +10,15 @@ import cors from 'cors'
 
 const port = process.env.PORT || 8080
 const app = express()
-const corsOptions = {
+const corsOptions: cors.CorsOptions = {
     origin: '*',
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'Origin'
+    ]
 }
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
