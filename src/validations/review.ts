@@ -8,7 +8,7 @@ export * as reviewValidator from "@/validations/review"
  */
 export const createValidation = [
     body("name").isString().isLength({ max: 250 }).escape(),
-    body("email").isEmail().escape(),
+    body("email").isEmail().optional().escape(),
     body("rating").isNumeric(),
     body("review").isString().escape()
 ]
